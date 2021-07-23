@@ -1,2 +1,9 @@
-package com.example.demo.repository;public class CancelBookingRepository {
+package com.example.demo.repository;
+
+import com.example.demo.entity.CancelBooking;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CancelBookingRepository extends JpaRepository<CancelBooking, Long> {
 }
