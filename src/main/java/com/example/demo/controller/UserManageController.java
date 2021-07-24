@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserDetail;
 import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.service.UserService;
@@ -41,4 +42,13 @@ public class UserManageController {
         }
         return  ResponseEntity.ok().body("Done unlock");
     }
+
+//   Xem thong tin director
+    @GetMapping("/getDirector/view/{directorId}")
+    public ResponseEntity<?> viewDirector(@PathVariable("directorId") Long directorId){
+        UserDetail directorDetails = userService.findOne(directorId);
+        return ResponseEntity.ok().body(directorDetails);
+    }
+
+
 }
