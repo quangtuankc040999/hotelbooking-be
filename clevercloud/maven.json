@@ -1,0 +1,10 @@
+{
+  "build": {
+    "type": "maven",
+    "goal": "package"
+  },
+  "deploy": {
+    "goal": "spring-boot:run",
+    "jarName": "target/demo-0.0.1-SNAPSHOT.jar"
+  }
+}
