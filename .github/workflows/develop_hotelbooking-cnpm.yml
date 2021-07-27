@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: java-app
-        path: '${{ github.workspace }}'
+        path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: windows-latest
@@ -50,4 +50,4 @@ jobs:
         app-name: 'hotelbooking-cnpm'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_9c351cfd19ee4f59b20feca6a3c932cb }}
-        package: '*.war'
+        package: '*.jar'
