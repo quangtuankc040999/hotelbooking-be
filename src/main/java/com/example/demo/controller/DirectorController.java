@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -117,6 +118,21 @@ public class DirectorController {
         return ResponseEntity.ok().body(new MessageResponse("Save changes"));
 
     }
+    //API delete hotel
+    @Transactional
+    @DeleteMapping(value = "/hotel/{hotelId}/delete")
+    public ResponseEntity<?> deleteHotel(@PathVariable("hotelId") Long hotelId) {
+
+        List<Room> roomList = roomService.getAllRoomByHotelId(hotelId);
+        for(Room room: roomList) {
+            roomService.deleteRoom(room.getId());
+        }
+        localizationService.deleteLocalizionHotel(hotelId);
+        imageService.deleteImgHotel(hotelId);
+        hotelService.deleteHotel(hotelId);
+        return ResponseEntity.ok().body(new MessageResponse("Delete hotel successful"));
+    }
+
     /*
      *  API FOR ROOM
      * */

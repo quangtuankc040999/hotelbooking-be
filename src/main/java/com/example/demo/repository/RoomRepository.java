@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface RoomRepository  extends JpaRepository<Room, Long> {
     @Query(value="select * from room where id= ? and hotel_id = ?", nativeQuery=true)
@@ -15,5 +17,8 @@ public interface RoomRepository  extends JpaRepository<Room, Long> {
     @Modifying
     @Query(value ="delete from room where id = ?", nativeQuery=true)
     void deleteRoom(Long roomId);
+
+    @Query(value="select * from room where hotel_id= ?", nativeQuery=true)
+    List<Room> findAllRoomByHotelId(Long id);
 
 }
