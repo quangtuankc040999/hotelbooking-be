@@ -13,5 +13,8 @@ public class LocalizationService {
     public void saveLoacation (Localization localization){
         localizationRepository.save(localization);
     }
+    public Localization getLocationById(Long id) {
+        return localizationRepository.getOne(id);
+    }
 
 }

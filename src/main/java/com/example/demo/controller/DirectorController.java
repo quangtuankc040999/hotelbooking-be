@@ -12,6 +12,7 @@ import com.example.demo.service.RoomService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +34,9 @@ public class DirectorController {
     private HotelService hotelService;
     @Autowired
     private RoomService roomService;
-
+/*
+*  API FOR HOTEL
+* */
 // API thêm khách sạn
 
     @PostMapping(value = "/hotel/new-hotel", consumes = {"multipart/form-data"})
@@ -74,6 +77,49 @@ public class DirectorController {
         return  ResponseEntity.ok(new MessageResponse("add hotel successfully"));
     }
 
+    // API update hotel
+
+    @GetMapping(value = "/hotel/{hotelId}/update")
+    public ResponseEntity<?> updateHotel(@PathVariable("hotelId") Long hotelId) {
+        return ResponseEntity.ok().body(hotelService.findHotelById(hotelId));
+    }
+
+
+    @Transactional
+    @PostMapping(value = "/hotel/{hotelId}/update/save")
+    public ResponseEntity<?> SaveUpdateHotel(@RequestParam("hotelRequest") String jsonHotel, @PathVariable("hotelId") Long hotelId,@RequestParam(name = "images") MultipartFile[] images ) {
+        try {
+            Gson gson = new Gson();
+            HotelRequest hotelRequest = gson.fromJson(jsonHotel, HotelRequest.class) ;
+
+            Hotel hotel = hotelService.findHotelById(hotelId);
+            hotel.setStandard(hotelRequest.getStandard());
+            hotel.setName(hotelRequest.getName());
+
+            Localization localization = localizationService.getLocationById(hotel.getAddress().getId());
+            localization.setCity(hotelRequest.getLocalization().getCity());
+            localization.setCountry(hotelRequest.getLocalization().getCountry());
+            localization.setStreet(hotelRequest.getLocalization().getStreet());
+            hotel.setAddress(localization);
+
+            localizationService.saveLoacation(localization);
+            hotel.setAddress(localization);
+            imageService.deleteImgHotel(hotelId);
+            for(int i = 0; i < images.length; i++) {
+                imageService.save(new Image(images[i].getBytes(), hotel));
+            }
+            hotelService.saveHotel(hotel);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body(new MessageResponse("Save changes"));
+    }
+
+    /*
+     *  API FOR ROOM
+     * */
+
 // API thêm phòng
     @PostMapping("/hotel/{hotelId}/new-room")
     public ResponseEntity<?> addRoom(@PathVariable("hotelId") Long hotelId,@RequestParam(name = "images") MultipartFile[] images, @RequestParam("roomRequest") String jsonRoom) {
@@ -100,5 +146,6 @@ public class DirectorController {
         }
         return ResponseEntity.ok().body(new MessageResponse("add room successfully"));
     }
+
 
 }

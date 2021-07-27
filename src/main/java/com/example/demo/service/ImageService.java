@@ -13,4 +13,7 @@ public class ImageService {
     public void save(Image img) {
         imageRepository.save(img);
     }
+    public void deleteImgHotel(Long id) {
+        imageRepository.deleteHotelInImg(id);
+    }
 }
