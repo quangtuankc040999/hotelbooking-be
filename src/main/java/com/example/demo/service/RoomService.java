@@ -11,4 +11,7 @@ public class RoomService {
     private RoomRepository roomRepository;
 
     public void saveRoom(Room room){roomRepository.save(room);}
+    public Room getRoomById(Long roomid, Long hotelid) {
+        return roomRepository.findOneById(roomid, hotelid);
+    }
 }

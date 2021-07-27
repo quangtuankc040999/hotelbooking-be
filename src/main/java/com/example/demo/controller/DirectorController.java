@@ -148,4 +148,36 @@ public class DirectorController {
     }
 
 
+    // API update room
+    @GetMapping(value = "/hotel/{hotelId}/{roomId}/update")
+    public ResponseEntity<?> updateRoom(@PathVariable("roomId") Long roomId, @PathVariable("hotelId") Long hotelId) {
+        return ResponseEntity.ok().body(roomService.getRoomById(roomId, hotelId));
+    }
+    @Transactional
+    @PostMapping(value = "/hotel/{hotelId}/{roomId}/update/save")
+    public ResponseEntity<?> SaveUpdateRoom(@RequestParam("roomRequest") String jsonRoom, @PathVariable("hotelId") Long hotelId,@PathVariable("roomId") Long roomId, @RequestParam(required = false, name = "images") MultipartFile[] images ) {
+        try {
+            Gson gson = new Gson();
+            RoomRequest roomRequest = gson.fromJson(jsonRoom, RoomRequest.class) ;
+
+            Room room = roomService.getRoomById(roomId, hotelId);
+            room.setName(roomRequest.getName());
+            room.setType(roomRequest.getType());
+            room.setPrice(roomRequest.getPrice());
+            room.setDescription(roomRequest.getDescription());
+            room.setCapacity(roomRequest.getCapacity());
+            room.setArea(roomRequest.getArea());
+            imageService.deleteImgRoom(roomId);
+            for(int i = 0; i < images.length; i++) {
+                imageService.save(new Image(images[i].getBytes(), room));
+            }
+            roomService.saveRoom(room);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body(new MessageResponse("Save changes"));
+    }
+
+
 }
