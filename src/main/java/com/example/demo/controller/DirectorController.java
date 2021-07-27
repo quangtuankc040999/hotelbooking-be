@@ -5,10 +5,7 @@ import com.example.demo.payload.reponse.MessageResponse;
 import com.example.demo.payload.request.HotelRequest;
 import com.example.demo.payload.request.RoomRequest;
 import com.example.demo.security.jwt.GetUserFromToken;
-import com.example.demo.service.HotelService;
-import com.example.demo.service.ImageService;
-import com.example.demo.service.LocalizationService;
-import com.example.demo.service.RoomService;
+import com.example.demo.service.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +31,10 @@ public class DirectorController {
     private HotelService hotelService;
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private DateService dateService;
+    @Autowired
+    private CancelBookingService cancelBookingService;
 /*
 *  API FOR HOTEL
 * */
@@ -114,8 +115,8 @@ public class DirectorController {
             e.printStackTrace();
         }
         return ResponseEntity.ok().body(new MessageResponse("Save changes"));
-    }
 
+    }
     /*
      *  API FOR ROOM
      * */
@@ -179,5 +180,15 @@ public class DirectorController {
         return ResponseEntity.ok().body(new MessageResponse("Save changes"));
     }
 
+    // API Delete room
+    @Transactional
+    @DeleteMapping("/hotel/{hotelId}/{roomId}/delete")
+    public ResponseEntity<?> deleteRoom(@PathVariable("roomId") Long roomId){
+        dateService.deleteBookingByRoom(roomId);
+        cancelBookingService.deleteBookingByRoom(roomId);
+        imageService.deleteImgRoom(roomId);
+        roomService.deleteRoom(roomId);
+        return  ResponseEntity.ok().body(new MessageResponse("Delete room successful"));
+    }
 
 }
