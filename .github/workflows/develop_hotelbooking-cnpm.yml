@@ -49,5 +49,5 @@ jobs:
       with:
         app-name: 'hotelbooking-cnpm'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_728dae9f81884166a902f2123177dcec }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9c351cfd19ee4f59b20feca6a3c932cb }}
         package: '*.war'
