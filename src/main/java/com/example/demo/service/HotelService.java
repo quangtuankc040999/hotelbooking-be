@@ -5,6 +5,8 @@ import com.example.demo.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class HotelService {
     @Autowired
@@ -16,6 +18,10 @@ public class HotelService {
     }
     public void deleteHotel(Long id) {
         hotelRepository.deleteHotel(id);
+    }
+
+    public List<Hotel> getAllHotelsByCityName(String cityName) {
+        return hotelRepository.findAllByCityName(cityName);
     }
 
 }
