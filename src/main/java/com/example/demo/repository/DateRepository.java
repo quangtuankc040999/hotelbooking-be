@@ -23,4 +23,11 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
     int numberOfDay(LocalDate end, LocalDate start);
     @Query(value = "SELECT DATEDIFF(?1, ?2) from booking_room", nativeQuery = true)
     int numberOfDay1(String  end, String start);
+
+    @Modifying
+    @Query(value = "delete from booking_room where id= ?;", nativeQuery = true)
+    void huyBooking (Long boookingId);
+
+    @Query(value = "SELECT * FROM booking_room where id = ?1", nativeQuery = true)
+    BookingRoom findBookingById (Long bookingId);
 }

@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Hotel;
-import com.example.demo.entity.Room;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import com.example.demo.payload.request.BookingRequest;
 import com.example.demo.security.jwt.GetUserFromToken;
 import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +29,8 @@ public class UserController {
 
     @Autowired
     EmailSenderService emailSenderService;
+    @Autowired
+    CancelBookingService cancelBookingService;
 
 
     // User page
@@ -120,6 +121,46 @@ public class UserController {
         // Send the email
         emailSenderService.sendEmail(mailMessage);
         return ResponseEntity.ok("Done booking");
+    }
+
+    // API cancel booking
+
+    @GetMapping(value = "/cancelBooking")
+    public ResponseEntity<?> cancelBooking(@RequestHeader("Authorization") String token) {
+        List<CancelBooking> cancelBookings = cancelBookingService.getCancelByHostId((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
+        return ResponseEntity.ok().body(cancelBookings);
+    }
+
+    @Transactional
+    @DeleteMapping(value = "/cancelBooking/{bookingId}")
+    public ResponseEntity<?> cancelBooking(@PathVariable("bookingId") Long bookingId, @RequestHeader("Authorization") String token){
+        User user = getUserFromToken.getUserByUserNameFromJwt(token.substring(7));
+        BookingRoom bookingRoom = dateService.findOneBooking(bookingId);
+        Room room = roomService.findOne(bookingRoom.getRoom().getId());
+
+        CancelBooking cancelBooking = new CancelBooking();
+        cancelBooking.setRoom(room);
+        cancelBooking.setStart(bookingRoom.getStart());
+        cancelBooking.setEnd(bookingRoom.getEnd());
+        cancelBooking.setHost(user);
+        System.out.println("-------------" + cancelBooking.getId());
+        cancelBookingService.saveCancelBooking(cancelBooking);
+        // Create the email
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setSubject("Complete cancel booking room ");
+        mailMessage.setText(
+                "Dear Mr/Ms " + user.getUserDetail().getNameUserDetail() +",\n"
+                        + "You complete cancel the room " + room.getName() + " at the " + room.getHotel().getName() + " from: " + bookingRoom.getStart() + " to: " + bookingRoom.getEnd() +"\n"
+                        + "We hope you enjoy when you use my serviece, Thank you!"
+
+        );
+        // Send the email
+        emailSenderService.sendEmail(mailMessage);
+
+        dateService.huyBooking(bookingId);
+
+        return ResponseEntity.ok("complete Cancel");
     }
 
 

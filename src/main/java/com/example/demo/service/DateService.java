@@ -62,4 +62,8 @@ public class DateService {
     }
 
 
+    public void huyBooking(Long bookingId){dateRepository.huyBooking(bookingId);}
+
+    public  BookingRoom findOneBooking(Long bookingId){ return dateRepository.findBookingById(bookingId);}
+
 }
