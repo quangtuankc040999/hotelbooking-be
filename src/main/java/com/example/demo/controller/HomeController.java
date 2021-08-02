@@ -6,13 +6,16 @@ import com.example.demo.payload.reponse.MessageResponse;
 import com.example.demo.payload.request.PasswordRequest;
 import com.example.demo.payload.request.SearchRequest;
 import com.example.demo.payload.request.UpdateInformationRequest;
+import com.example.demo.repository.ConfirmationTokenRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.jwt.GetUserFromToken;
 import com.example.demo.service.DateService;
+import com.example.demo.service.EmailSenderService;
 import com.example.demo.service.HotelService;
 import com.example.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,11 @@ public class HomeController {
     UserRepository userRepository;
     @Autowired
     PasswordEncoder encoder;
+    @Autowired
+    ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Autowired
+    EmailSenderService emailSenderService;
 
     List<HotelSearchResponse> hotelSearchResponseList = new ArrayList<>();
 
@@ -122,5 +130,43 @@ public class HomeController {
         } else {
             return ResponseEntity.ok().body(new MessageResponse("current password incorrect"));
         }
+    }
+
+
+    // forget password
+
+    @PostMapping(value = "/forgot-password/{email}")
+    public ResponseEntity<?> forgotUserPassword(@PathVariable("email") String email) {
+        User existingUser = userRepository.findByEmail(email);
+        if (existingUser != null) {
+            // Create token
+            ConfirmationToken confirmationToken = new ConfirmationToken(existingUser);
+            // Save it
+            confirmationTokenRepository.save(confirmationToken);
+            // Create the email
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(existingUser.getEmail());
+            mailMessage.setSubject("Complete Password Reset!");
+            mailMessage.setText("To complete the password reset process, please click here: "
+                    + "http://localhost:8080/forgot-password/reset-password/"+confirmationToken.getConfirmationToken());
+
+            // Send the email
+            emailSenderService.sendEmail(mailMessage);
+            return ResponseEntity.ok().body(confirmationToken.getConfirmationToken());
+        } else {
+            return ResponseEntity.ok().body(new MessageResponse("Email does not exist"));
+        }
+//        return modelAndView;
+    }
+
+    @PostMapping(value = "/forgot-password/reset-password/{token}")
+    public ResponseEntity<?> confirmPassword(@PathVariable("token") String token, @RequestParam("password") String passwordRequest) {
+        ConfirmationToken confirmationToken = confirmationTokenRepository.findByConfirmationToken(token);
+        User user = confirmationToken.getUser();
+        user.setPassword(encoder.encode(passwordRequest));
+
+        userRepository.save(user);
+
+        return ResponseEntity.ok().body(new MessageResponse("change password successfully"));
     }
 }
