@@ -137,6 +137,7 @@ public class HomeController {
 
     @PostMapping(value = "/forgot-password/{email}")
     public ResponseEntity<?> forgotUserPassword(@PathVariable("email") String email) {
+        String host = "http://localhost:8080";
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null) {
             // Create token
@@ -148,7 +149,7 @@ public class HomeController {
             mailMessage.setTo(existingUser.getEmail());
             mailMessage.setSubject("Complete Password Reset!");
             mailMessage.setText("To complete the password reset process, please click here: "
-                    + "http://localhost:8080/forgot-password/reset-password/"+confirmationToken.getConfirmationToken());
+                    + host + "/forgot-password/reset-password/"+confirmationToken.getConfirmationToken());
 
             // Send the email
             emailSenderService.sendEmail(mailMessage);
@@ -156,7 +157,6 @@ public class HomeController {
         } else {
             return ResponseEntity.ok().body(new MessageResponse("Email does not exist"));
         }
-//        return modelAndView;
     }
 
     @PostMapping(value = "/forgot-password/reset-password/{token}")
