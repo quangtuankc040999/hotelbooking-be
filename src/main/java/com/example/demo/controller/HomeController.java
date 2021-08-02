@@ -7,6 +7,7 @@ import com.example.demo.payload.request.PasswordRequest;
 import com.example.demo.payload.request.SearchRequest;
 import com.example.demo.payload.request.UpdateInformationRequest;
 import com.example.demo.repository.ConfirmationTokenRepository;
+import com.example.demo.repository.UserDetailRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.jwt.GetUserFromToken;
 import com.example.demo.service.DateService;
@@ -18,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
@@ -38,7 +41,8 @@ public class HomeController {
     PasswordEncoder encoder;
     @Autowired
     ConfirmationTokenRepository confirmationTokenRepository;
-
+    @Autowired
+    UserDetailRepository userDetailRepository;
     @Autowired
     EmailSenderService emailSenderService;
 
@@ -168,5 +172,20 @@ public class HomeController {
         userRepository.save(user);
 
         return ResponseEntity.ok().body(new MessageResponse("change password successfully"));
+    }
+
+
+    // Change Avatar
+    @PostMapping(value = "/change-avatar")
+    public ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String token,@RequestParam(name = "avatar") MultipartFile avatar){
+        User user = getUserFromToken.getUserByUserNameFromJwt(token.substring(7));
+        UserDetail userDetail = user.getUserDetail();
+        try {
+            userDetail.setAvatar(avatar.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        userDetailRepository.save(userDetail);
+        return ResponseEntity.ok().body(new MessageResponse("Change Avatar successfully"));
     }
 }
