@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.*;
 import com.example.demo.payload.reponse.MessageResponse;
+import com.example.demo.payload.reponse.ThongKeDatPhongDirector;
+import com.example.demo.payload.reponse.ThongKeDoanhThuDirector;
 import com.example.demo.payload.request.HotelRequest;
 import com.example.demo.payload.request.RoomRequest;
 import com.example.demo.security.jwt.GetUserFromToken;
@@ -205,6 +207,38 @@ public class DirectorController {
         imageService.deleteImgRoom(roomId);
         roomService.deleteRoom(roomId);
         return  ResponseEntity.ok().body(new MessageResponse("Delete room successful"));
+    }
+
+
+
+// API thong ke Director
+    @GetMapping("/thongke/{month}")
+    public ResponseEntity<?> getAllBookingInMonth(@RequestHeader("Authorization") String token, @PathVariable("month") Long month){
+        Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
+        List<ThongKeDatPhongDirector> thongKeDirectors = dateService.getAllBookingInMonth(month, idDirector);
+    return  ResponseEntity.ok().body(thongKeDirectors);
+    }
+    @GetMapping("/thongke/{month}/{hotelId}")
+    public ResponseEntity<?> getAllBookingInMonthOfHotel(@RequestHeader("Authorization") String token, @PathVariable("month") Long month, @PathVariable("hotelId") Long hotelId){
+        Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
+        List<ThongKeDatPhongDirector> thongKeDirectors = dateService.getAllBookingInMonthOfHotel(month, idDirector, hotelId);
+        return  ResponseEntity.ok().body(thongKeDirectors);
+    }
+
+    // API thongke doanh thu cua tat ca khach san trong thang
+    @GetMapping("/thongke/total/{month}")
+    public ResponseEntity<?> getTotalAllHotelInMonth(@RequestHeader("Authorization") String token, @PathVariable("month") Long month){
+        Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
+        List<ThongKeDoanhThuDirector> thongKeDirectors = dateService.getTotalAllHotelInMonth(month, idDirector);
+        return  ResponseEntity.ok().body(thongKeDirectors);
+    }
+
+    // API get all hotel of director
+    @GetMapping("/all-hotel")
+    public ResponseEntity<?> getAllHotel(@RequestHeader("Authorization") String token){
+        Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
+        List<Hotel> hotels = hotelService.findAllHotelByDirectorId(idDirector);
+        return  ResponseEntity.ok().body(hotels);
     }
 
 }
