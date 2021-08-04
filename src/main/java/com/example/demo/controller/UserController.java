@@ -179,4 +179,12 @@ public class UserController {
         List<ThongKeDatPhongUser> historyBooking = dateService.getAllDateAfterNow((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
         return ResponseEntity.ok().body(historyBooking);
     }
+
+    @GetMapping(value = "/history-cancel-booking")
+    public ResponseEntity<?> historyCancelBooking(@RequestHeader("Authorization") String token) {
+        List<ThongKeDatPhongUser> historyBooking = dateService.getAllCancelBooking((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
+        return ResponseEntity.ok().body(historyBooking);
+    }
+
+
 }

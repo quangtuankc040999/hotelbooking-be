@@ -51,5 +51,13 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
             "where start >= current_date() and host_id= ? ", nativeQuery = true)
     List<ThongKeDatPhongUser> findAllBookingRoomAfterNow(Long id);
 
+    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  datediff(end,start)*room.price as Total\n" +
+            "from cancel_booking\n" +
+            "join room on cancel_booking.room_id = room.id \n" +
+            "join hotel on room.hotel_id = hotel.id\n" +
+            "join localization on hotel.id = localization.hotel_id\n" +
+            "where host_id= ?", nativeQuery = true)
+    List<ThongKeDatPhongUser> findAllCancelBooking(Long id);
+
 
 }

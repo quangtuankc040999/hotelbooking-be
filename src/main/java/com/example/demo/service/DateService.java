@@ -74,5 +74,8 @@ public class DateService {
     public List<ThongKeDatPhongUser> getAllDateAfterNow(Long id) {
         return dateRepository.findAllBookingRoomAfterNow(id);
     }
+    public List<ThongKeDatPhongUser> getAllCancelBooking(Long id) {
+        return dateRepository.findAllCancelBooking(id);
+    }
 
 }
