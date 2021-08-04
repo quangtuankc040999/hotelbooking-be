@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.*;
+import com.example.demo.payload.reponse.ThongKeDatPhongUser;
 import com.example.demo.payload.request.BookingRequest;
 import com.example.demo.security.jwt.GetUserFromToken;
 import com.example.demo.service.*;
@@ -166,7 +167,24 @@ public class UserController {
     }
 
 
+    // Thong ke user
+    @GetMapping(value = "/history-booking-before")
+    public ResponseEntity<?> historyBookingBefore(@RequestHeader("Authorization") String token) {
+        List<ThongKeDatPhongUser> historyBooking = dateService.getAllDateBeforeNow((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
+        return ResponseEntity.ok().body(historyBooking);
+    }
 
+    @GetMapping(value = "/history-booking-after")
+    public ResponseEntity<?> historyBookingAfter(@RequestHeader("Authorization") String token) {
+        List<ThongKeDatPhongUser> historyBooking = dateService.getAllDateAfterNow((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
+        return ResponseEntity.ok().body(historyBooking);
+    }
+
+    @GetMapping(value = "/history-cancel-booking")
+    public ResponseEntity<?> historyCancelBooking(@RequestHeader("Authorization") String token) {
+        List<ThongKeDatPhongUser> historyBooking = dateService.getAllCancelBooking((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
+        return ResponseEntity.ok().body(historyBooking);
+    }
 
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.BookingRoom;
 import com.example.demo.entity.User;
+import com.example.demo.payload.reponse.ThongKeDatPhongUser;
 import com.example.demo.repository.DateRepository;
 import com.example.demo.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,16 @@ public class DateService {
     public void huyBooking(Long bookingId){dateRepository.huyBooking(bookingId);}
 
     public  BookingRoom findOneBooking(Long bookingId){ return dateRepository.findBookingById(bookingId);}
+
+
+    public List<ThongKeDatPhongUser> getAllDateBeforeNow(Long id) {
+        return dateRepository.findAllBookingRoomBeforeNow(id);
+    }
+    public List<ThongKeDatPhongUser> getAllDateAfterNow(Long id) {
+        return dateRepository.findAllBookingRoomAfterNow(id);
+    }
+    public List<ThongKeDatPhongUser> getAllCancelBooking(Long id) {
+        return dateRepository.findAllCancelBooking(id);
+    }
 
 }
