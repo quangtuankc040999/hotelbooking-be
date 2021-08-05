@@ -56,4 +56,8 @@ public class UserService {
     public UserDetail findOne (Long userId){
         return userDetailRepository.findOne(userId);
     }
+
+    public UserDetail getAvatar(Long userId){
+        return userDetailRepository.getAvatar(userId);
+    }
 }

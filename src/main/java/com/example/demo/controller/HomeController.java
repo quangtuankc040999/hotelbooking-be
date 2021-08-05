@@ -10,10 +10,7 @@ import com.example.demo.repository.ConfirmationTokenRepository;
 import com.example.demo.repository.UserDetailRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.jwt.GetUserFromToken;
-import com.example.demo.service.DateService;
-import com.example.demo.service.EmailSenderService;
-import com.example.demo.service.HotelService;
-import com.example.demo.service.RoomService;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -45,6 +42,8 @@ public class HomeController {
     UserDetailRepository userDetailRepository;
     @Autowired
     EmailSenderService emailSenderService;
+    @Autowired
+    UserService userService;
 
     List<HotelSearchResponse> hotelSearchResponseList = new ArrayList<>();
 
@@ -187,5 +186,11 @@ public class HomeController {
         }
         userDetailRepository.save(userDetail);
         return ResponseEntity.ok().body(new MessageResponse("Change Avatar successfully"));
+    }
+    // get Avatar
+    @GetMapping(value = "/get-avatar")
+    public ResponseEntity<?> getAvatar(@RequestHeader("Authorization") String token){
+        Long userId = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
+        return ResponseEntity.ok().body( userService.getAvatar(userId).getAvatar());
     }
 }
