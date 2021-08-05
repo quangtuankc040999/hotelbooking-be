@@ -39,28 +39,33 @@ public class DateService {
     public void deleteBookingByRoom(Long roomId) {
         dateRepository.deleteRoomInBookingRoom(roomId);
     }
+
     // Thong ke director
-    public List<ThongKeDatPhongDirector> getAllBookingInMonth(Long month, Long idDirector){
+    public List<ThongKeDatPhongDirector> getAllBookingInMonth(Long month, Long idDirector) {
         return dateRepository.getAllBookingInMonth(month, idDirector);
     }
 
 
-    public List<ThongKeDatPhongDirector> getAllBookingInMonthOfHotel(Long month, Long idDirector, Long hotelId){
+    public List<ThongKeDatPhongDirector> getAllBookingInMonthOfHotel(Long month, Long idDirector, Long hotelId) {
         return dateRepository.getAllBookingInMonthOfHotel(month, idDirector, hotelId);
     }
 
     public List<ThongKeDoanhThuDirector> getTotalAllHotelInMonth(Long month, Long idDirector) {
         return dateRepository.getTotalAllHotelInMonth(month, idDirector);
     }
+<<<<<<< HEAD
     public List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> getTotalOfHotelEachMonth(Long hotelId, Long idDirector) {
         return dateRepository.getAllTotalOfHotelEachMonth(hotelId, idDirector);
     }
 
 
+=======
+>>>>>>> develop
 
     public List<BookingRoom> getAllRoomByDateBooking(LocalDate start, LocalDate end) {
         return dateRepository.findRoomByDateBooking(start, end, start, end);
     }
+
     public void bookRoom1(String from, String to, long id, User user) {
         BookingRoom bookingRoom = new BookingRoom();
         bookingRoom.setStart(startDate(from));
@@ -69,6 +74,7 @@ public class DateService {
         bookingRoom.setHost(user);
         dateRepository.save(bookingRoom);
     }
+
     public void bookRoom(LocalDate from, LocalDate to, long id, User user) {
         BookingRoom bookingRoom = new BookingRoom();
         bookingRoom.setStart(from);
@@ -77,27 +83,35 @@ public class DateService {
         bookingRoom.setHost(user);
         dateRepository.save(bookingRoom);
     }
-    public int numberOfDay(LocalDate end, LocalDate start){
-        return  dateRepository.numberOfDay(end, start);
-    }
-    public int numberOfDay1(String end, String start){
-        return  dateRepository.numberOfDay1(end, start);
+
+    public int numberOfDay(LocalDate end, LocalDate start) {
+        return dateRepository.numberOfDay(end, start);
     }
 
+    public int numberOfDay1(String end, String start) {
+        return dateRepository.numberOfDay1(end, start);
+    }
 
-    public void huyBooking(Long bookingId){dateRepository.huyBooking(bookingId);}
 
-    public  BookingRoom findOneBooking(Long bookingId){ return dateRepository.findBookingById(bookingId);}
+    public void huyBooking(Long bookingId) {
+        dateRepository.huyBooking(bookingId);
+    }
+
+    public BookingRoom findOneBooking(Long bookingId) {
+        return dateRepository.findBookingById(bookingId);
+    }
 
 
     public List<ThongKeDatPhongUser> getAllDateBeforeNow(Long id) {
         return dateRepository.findAllBookingRoomBeforeNow(id);
     }
+
     public List<ThongKeDatPhongUser> getAllDateAfterNow(Long id) {
         return dateRepository.findAllBookingRoomAfterNow(id);
     }
+
     public List<ThongKeDatPhongUser> getAllCancelBooking(Long id) {
         return dateRepository.findAllCancelBooking(id);
     }
-
 }
+
