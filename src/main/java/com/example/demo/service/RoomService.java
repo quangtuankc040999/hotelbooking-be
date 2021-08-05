@@ -44,5 +44,9 @@ public class RoomService {
         return roomRepository.getOne(idRoom);
     }
 
+    public List<Long> getAllRoomBookedByUser(Long userId){
+        return  roomRepository.getAllRoomBookedByUser(userId);
+    }
+
 
 }
