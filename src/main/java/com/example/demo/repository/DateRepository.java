@@ -4,6 +4,7 @@ import com.example.demo.entity.BookingRoom;
 import com.example.demo.payload.reponse.ThongKeDatPhongDirector;
 import com.example.demo.payload.reponse.ThongKeDoanhThuDirector;
 import com.example.demo.payload.reponse.ThongKeDatPhongUser;
+import com.example.demo.payload.reponse.ThongKeTatCaDoanhThuCuaKhachSanTheoThang;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,7 +43,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
             "where month(start) = ? and hotel.h_owner_id = ? and hotel.id = ?", nativeQuery = true)
     List<ThongKeDatPhongDirector> getAllBookingInMonthOfHotel(Long month, Long owner_id , Long hotelId);
 
-    // Thong ke doan thu cua tat ca khach san trong thang
+    // Thong ke doanh thu cua tat ca khach san trong thang
     @Query(value = "\n" +
             "select hotel.name as hotelName, city, sum( datediff(end,start)*room.price)   as totalInMonth\n" +
             "from booking_room \n" +
@@ -50,8 +51,20 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
             "join hotel on room.hotel_id = hotel.id\n" +
             "join localization on hotel.id = localization.hotel_id\n" +
             "where month(start) = ? and hotel.h_owner_id = ?\n" +
-            "group by hotel.name;", nativeQuery = true)
+            "group by hotel.name order by totalInMonth DESC;", nativeQuery = true)
     List<ThongKeDoanhThuDirector> getTotalAllHotelInMonth(Long month, Long owner_id);
+
+
+    //Thong ke doanh thu cua khach san A theo từng tháng
+    @Query(value = "select month(start) as month, hotel.name, city, sum( datediff(end,start)*room.price)   as totalInMonth\n" +
+            "from booking_room \n" +
+            "join room on booking_room.room_id = room.id\n" +
+            "join hotel on room.hotel_id = hotel.id\n" +
+            "join localization on hotel.id = localization.hotel_id\n" +
+            "where hotel.id = ? and hotel.h_owner_id = ?\n" +
+            "group by month(start)\n" +
+            "order by month(start) DESC;", nativeQuery = true)
+    List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> getAllTotalOfHotelEachMonth(Long hotelId, Long owner_id);
 
 
     @Query(value="select * from booking_room where" +

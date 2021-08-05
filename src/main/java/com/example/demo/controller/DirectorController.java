@@ -4,6 +4,7 @@ import com.example.demo.entity.*;
 import com.example.demo.payload.reponse.MessageResponse;
 import com.example.demo.payload.reponse.ThongKeDatPhongDirector;
 import com.example.demo.payload.reponse.ThongKeDoanhThuDirector;
+import com.example.demo.payload.reponse.ThongKeTatCaDoanhThuCuaKhachSanTheoThang;
 import com.example.demo.payload.request.HotelRequest;
 import com.example.demo.payload.request.RoomRequest;
 import com.example.demo.security.jwt.GetUserFromToken;
@@ -233,6 +234,15 @@ public class DirectorController {
         return  ResponseEntity.ok().body(thongKeDirectors);
     }
 
+    // Thong ke doanh thu cua Khach san A trong tung thang
+    @GetMapping("/thongke/total/{hotelId}")
+    public ResponseEntity<?> getTotalOfHotelEachMonth(@RequestHeader("Authorization") String token, @PathVariable("hotelId") Long hotelId){
+        Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
+        List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> thongKeDirectors = dateService.getTotalOfHotelEachMonth(hotelId, idDirector);
+        return  ResponseEntity.ok().body(thongKeDirectors);
+    }
+
+
     // API get all hotel of director
     @GetMapping("/all-hotel")
     public ResponseEntity<?> getAllHotel(@RequestHeader("Authorization") String token){
@@ -240,5 +250,6 @@ public class DirectorController {
         List<Hotel> hotels = hotelService.findAllHotelByDirectorId(idDirector);
         return  ResponseEntity.ok().body(hotels);
     }
+
 
 }
