@@ -5,6 +5,7 @@ import com.example.demo.payload.reponse.ThongKeDoanhThuDirector;
 import com.example.demo.entity.BookingRoom;
 import com.example.demo.entity.User;
 import com.example.demo.payload.reponse.ThongKeDatPhongUser;
+import com.example.demo.payload.reponse.ThongKeTatCaDoanhThuCuaKhachSanTheoThang;
 import com.example.demo.repository.DateRepository;
 import com.example.demo.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,14 @@ public class DateService {
     public List<ThongKeDoanhThuDirector> getTotalAllHotelInMonth(Long month, Long idDirector) {
         return dateRepository.getTotalAllHotelInMonth(month, idDirector);
     }
+<<<<<<< HEAD
+    public List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> getTotalOfHotelEachMonth(Long hotelId, Long idDirector) {
+        return dateRepository.getAllTotalOfHotelEachMonth(hotelId, idDirector);
+    }
+
+
+=======
+>>>>>>> develop
 
     public List<BookingRoom> getAllRoomByDateBooking(LocalDate start, LocalDate end) {
         return dateRepository.findRoomByDateBooking(start, end, start, end);
