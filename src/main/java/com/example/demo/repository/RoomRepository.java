@@ -23,4 +23,5 @@ public interface RoomRepository  extends JpaRepository<Room, Long> {
 
     @Query(value = "SELECT * FROM room where hotel_id = ?1 and capacity = ?2", nativeQuery = true)
     List<Room> searchRoomByCapacity (Long hotelId, int capacity);
+
 }
