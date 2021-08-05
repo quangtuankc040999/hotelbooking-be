@@ -48,7 +48,10 @@ public class UserService {
     public User findUserByEmail(String userEmail) {
         return userRepository.findByEmail(userEmail);
     }
-//    public List<User> findDirectorLookFalse() { return userRepository.findDirectorLookedFalse();}
+
+    // Get directer da dang ky nhung tai khoan chua duoc mo
+    public List<User> findDirectorLookFalse() { return userRepository.findDirectorLookedFalse();}
+
 
     public UserDetail findOne (Long userId){
         return userDetailRepository.findOne(userId);
