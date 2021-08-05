@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Hotel;
+import com.example.demo.payload.reponse.ThongKeKhachSanTheoThanhPhoAdmin;
 import com.example.demo.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,13 @@ public class HotelService {
 
     public List<Hotel> findAllHotelByDirectorId(Long directorId) {
         return hotelRepository.getAllHotelByDirectorId(directorId);
+    }
     public List<Hotel> getAllHotelsByCityName(String cityName) {
         return hotelRepository.findAllByCityName(cityName);
+    }
+
+    public List<ThongKeKhachSanTheoThanhPhoAdmin> getAllHotelByCityNameAdmin(String cityName){
+        return hotelRepository.getAllHotelInCity(cityName);
     }
 
 }

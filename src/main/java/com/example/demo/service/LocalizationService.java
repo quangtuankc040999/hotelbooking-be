@@ -1,9 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Localization;
+import com.example.demo.payload.reponse.ThongKeSoLuongKhachSanTheoThanhPho;
 import com.example.demo.repository.LocalizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class LocalizationService {
@@ -21,5 +24,8 @@ public class LocalizationService {
         localizationRepository.deleteLocalizationHotel(hotelId);
     }
 
+    public List<ThongKeSoLuongKhachSanTheoThanhPho> countNumberOfHotelInCity(){
+        return  localizationRepository.countNumberOfHotel();
+    }
 
 }
