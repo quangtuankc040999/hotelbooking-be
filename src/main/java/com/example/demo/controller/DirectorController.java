@@ -251,5 +251,11 @@ public class DirectorController {
         return  ResponseEntity.ok().body(hotels);
     }
 
+    @GetMapping("/{hotelId}/all-room")
+    public  ResponseEntity<?> getAllRoom(@PathVariable("hotelId") Long hotelId){
+        List<Room> rooms = roomService.getAllRoomByHotelId(hotelId);
+        return  ResponseEntity.ok().body(rooms);
+    }
+
 
 }
