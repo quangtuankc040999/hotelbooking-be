@@ -16,6 +16,8 @@ public interface HotelRepository  extends JpaRepository<Hotel,Long > {
     @Query(value ="delete from hotel where hotel.id = ?", nativeQuery=true)
     void deleteHotel(Long id);
 
+    @Query(value = "SELECT * FROM bookingbe.hotel where h_owner_id = ?", nativeQuery = true)
+    List<Hotel> getAllHotelByDirectorId (Long idDirector);
     @Query(value="SELECT * FROM hotel  join localization on hotel.id = localization.hotel_id where localization.city = ?", nativeQuery=true)
     List<Hotel> findAllByCityName (String cityName);
 }

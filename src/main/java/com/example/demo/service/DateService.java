@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.payload.reponse.ThongKeDatPhongDirector;
+import com.example.demo.payload.reponse.ThongKeDoanhThuDirector;
 import com.example.demo.entity.BookingRoom;
 import com.example.demo.entity.User;
 import com.example.demo.payload.reponse.ThongKeDatPhongUser;
@@ -36,6 +38,18 @@ public class DateService {
     public void deleteBookingByRoom(Long roomId) {
         dateRepository.deleteRoomInBookingRoom(roomId);
     }
+    // Thong ke director
+    public List<ThongKeDatPhongDirector> getAllBookingInMonth(Long month, Long idDirector){
+        return dateRepository.getAllBookingInMonth(month, idDirector);
+    }
+
+
+    public List<ThongKeDatPhongDirector> getAllBookingInMonthOfHotel(Long month, Long idDirector, Long hotelId){
+        return dateRepository.getAllBookingInMonthOfHotel(month, idDirector, hotelId);
+    }
+
+    public List<ThongKeDoanhThuDirector> getTotalAllHotelInMonth(Long month, Long idDirector){
+        return  dateRepository.getTotalAllHotelInMonth(month, idDirector);
     public List<BookingRoom> getAllRoomByDateBooking(LocalDate start, LocalDate end) {
         return dateRepository.findRoomByDateBooking(start, end, start, end);
     }

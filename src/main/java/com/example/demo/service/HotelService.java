@@ -20,6 +20,8 @@ public class HotelService {
         hotelRepository.deleteHotel(id);
     }
 
+    public List<Hotel> findAllHotelByDirectorId(Long directorId) {
+        return hotelRepository.getAllHotelByDirectorId(directorId);
     public List<Hotel> getAllHotelsByCityName(String cityName) {
         return hotelRepository.findAllByCityName(cityName);
     }
