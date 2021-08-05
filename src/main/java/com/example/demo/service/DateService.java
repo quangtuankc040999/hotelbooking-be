@@ -53,14 +53,12 @@ public class DateService {
     public List<ThongKeDoanhThuDirector> getTotalAllHotelInMonth(Long month, Long idDirector) {
         return dateRepository.getTotalAllHotelInMonth(month, idDirector);
     }
-<<<<<<< HEAD
+
     public List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> getTotalOfHotelEachMonth(Long hotelId, Long idDirector) {
         return dateRepository.getAllTotalOfHotelEachMonth(hotelId, idDirector);
     }
 
 
-=======
->>>>>>> develop
 
     public List<BookingRoom> getAllRoomByDateBooking(LocalDate start, LocalDate end) {
         return dateRepository.findRoomByDateBooking(start, end, start, end);

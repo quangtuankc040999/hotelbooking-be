@@ -227,7 +227,7 @@ public class DirectorController {
     }
 
     // API thongke doanh thu cua tat ca khach san trong thang
-    @GetMapping("/thongke/total/{month}")
+    @GetMapping("/thongke/total/allHotel/{month}")
     public ResponseEntity<?> getTotalAllHotelInMonth(@RequestHeader("Authorization") String token, @PathVariable("month") Long month){
         Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
         List<ThongKeDoanhThuDirector> thongKeDirectors = dateService.getTotalAllHotelInMonth(month, idDirector);
@@ -235,7 +235,7 @@ public class DirectorController {
     }
 
     // Thong ke doanh thu cua Khach san A trong tung thang
-    @GetMapping("/thongke/total/{hotelId}")
+    @GetMapping("/thongke/total/eachHotel/{hotelId}")
     public ResponseEntity<?> getTotalOfHotelEachMonth(@RequestHeader("Authorization") String token, @PathVariable("hotelId") Long hotelId){
         Long idDirector = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
         List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> thongKeDirectors = dateService.getTotalOfHotelEachMonth(hotelId, idDirector);
