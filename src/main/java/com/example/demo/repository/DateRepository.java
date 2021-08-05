@@ -45,7 +45,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
 
     // Thong ke doanh thu cua tat ca khach san trong thang
     @Query(value = "\n" +
-            "select hotel.name as hotelName, city, sum( datediff(end,start)*room.price)   as totalInMonth\n" +
+            "select hotel.name as hotelName, city, sum( datediff(end,start)*room.price) as totalInMonth\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id\n" +
             "join hotel on room.hotel_id = hotel.id\n" +
@@ -56,14 +56,14 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
 
 
     //Thong ke doanh thu cua khach san A theo từng tháng
-    @Query(value = "select month(start) as month, hotel.name, city, sum( datediff(end,start)*room.price)   as totalInMonth\n" +
+    @Query(value = "select month(start) as month, hotel.name as hotelName, city, sum( datediff(end,start)*room.price) as totalInMonth\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id\n" +
             "join hotel on room.hotel_id = hotel.id\n" +
             "join localization on hotel.id = localization.hotel_id\n" +
             "where hotel.id = ? and hotel.h_owner_id = ?\n" +
             "group by month(start)\n" +
-            "order by month(start) DESC;", nativeQuery = true)
+            "ORDER BY month DESC", nativeQuery = true)
     List<ThongKeTatCaDoanhThuCuaKhachSanTheoThang> getAllTotalOfHotelEachMonth(Long hotelId, Long owner_id);
 
 
