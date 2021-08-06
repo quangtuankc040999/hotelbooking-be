@@ -22,7 +22,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
     // Thong ke Director
 
     // Thong ke trong thang n trong tat ca khach san cua director có nhung booking nao
-    @Query(value = "SELECT  city, hotel.name as hotelName, room.name as roomName, room.type as roomType, end, start, booking_room.id as bookingId, user_detail.name_user_detail as userName, user.email as userEmail,  datediff(end,start)*room.price as Total\n" +
+    @Query(value = "SELECT  city, hotel.name as hotelName, room.name as roomName, room.type as roomType, end, start, booking_room.id as bookingId, user_detail.name_user_detail as userName, user.email as userEmail,  (datediff(end,start)+1)*room.price as Total\n" +
             "FROM room  join booking_room   on booking_room.room_id = room.id \n" +
             "join hotel on room.hotel_id = hotel.id\n" +
             "join localization on hotel.id = localization.hotel_id\n" +
@@ -34,7 +34,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
 
 
     // Thong ke trong thang n trong khach san A cua director có nhung booking nao
-    @Query(value = "SELECT  city, hotel.name as hotelName, room.name as roomName, room.type as roomType, end, start, booking_room.id as bookingId, user_detail.name_user_detail as userName, user.email as userEmail,  datediff(end,start)*room.price as Total\n" +
+    @Query(value = "SELECT  city, hotel.name as hotelName, room.name as roomName, room.type as roomType, end, start, booking_room.id as bookingId, user_detail.name_user_detail as userName, user.email as userEmail,  (datediff(end,start)+1)*room.price as Total\n" +
             "FROM room  join booking_room   on booking_room.room_id = room.id \n" +
             "join hotel on room.hotel_id = hotel.id\n" +
             "join localization on hotel.id = localization.hotel_id\n" +
@@ -45,7 +45,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
 
     // Thong ke doanh thu cua tat ca khach san trong thang
     @Query(value = "\n" +
-            "select hotel.name as hotelName, city, sum( datediff(end,start)*room.price) as totalInMonth\n" +
+            "select hotel.name as hotelName, city, sum( (datediff(end,start)+1)*room.price) as totalInMonth\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id\n" +
             "join hotel on room.hotel_id = hotel.id\n" +
@@ -56,7 +56,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
 
 
     //Thong ke doanh thu cua khach san A theo từng tháng
-    @Query(value = "select month(start) as month, hotel.name as hotelName, city, sum( datediff(end,start)*room.price) as totalInMonth\n" +
+    @Query(value = "select month(start) as month, hotel.name as hotelName, city, sum( (datediff(end,start)+1)*room.price) as totalInMonth\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id\n" +
             "join hotel on room.hotel_id = hotel.id\n" +
@@ -86,7 +86,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
 
 
     // thong ke
-    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  datediff(end,start)*room.price as Total\n" +
+    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country, (datediff(end,start)+1)*room.price as Total\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id \n" +
             "join hotel on room.hotel_id = hotel.id\n" +
@@ -95,7 +95,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
     List<ThongKeDatPhongUser> findAllBookingRoomBeforeNow(Long id);
 
 
-    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  datediff(end,start)*room.price as Total\n" +
+    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  (datediff(end,start)+1)*room.price as Total\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id \n" +
             "join hotel on room.hotel_id = hotel.id\n" +
@@ -103,7 +103,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
             "where start >= current_date() and host_id= ? ", nativeQuery = true)
     List<ThongKeDatPhongUser> findAllBookingRoomAfterNow(Long id);
 
-    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  datediff(end,start)*room.price as Total\n" +
+    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  (datediff(end,start)+1)*room.price as Total\n" +
             "from cancel_booking\n" +
             "join room on cancel_booking.room_id = room.id \n" +
             "join hotel on room.hotel_id = hotel.id\n" +
