@@ -1,16 +1,22 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.*;
+import com.example.demo.payload.reponse.MessageResponse;
 import com.example.demo.payload.reponse.ThongKeDatPhongUser;
 import com.example.demo.payload.request.BookingRequest;
+import com.example.demo.payload.request.CommentRequest;
+import com.example.demo.payload.request.HotelRequest;
 import com.example.demo.security.jwt.GetUserFromToken;
 import com.example.demo.service.*;
+import com.google.gson.Gson;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -32,6 +38,8 @@ public class UserController {
     EmailSenderService emailSenderService;
     @Autowired
     CancelBookingService cancelBookingService;
+    @Autowired
+    CommentService commentService;
 
 
     // User page
@@ -185,6 +193,42 @@ public class UserController {
         List<ThongKeDatPhongUser> historyBooking = dateService.getAllCancelBooking((getUserFromToken.getUserByUserNameFromJwt(token.substring(7))).getId());
         return ResponseEntity.ok().body(historyBooking);
     }
+
+
+//    API chức năng comment
+    @PostMapping(value ="/comment/{hotelId}/{roomId}/post")
+    public  ResponseEntity<?> writeComment(@RequestHeader("Authorization") String token, @RequestParam("commentRequest") String jsonComment, @PathVariable("hotelId")Long hotelId, @PathVariable("roomId") Long roomId){
+
+            String newToken = token.substring(7);
+            User user = getUserFromToken.getUserByUserNameFromJwt(newToken);
+            boolean check = false;
+            List<Long> listRoomBookedByUser = roomService.getAllRoomBookedByUser(user.getId());
+            for(Long i : listRoomBookedByUser){
+                if(roomId == i){
+                    check = true;
+                    break;
+                }else {
+                    check = false;
+                }
+            }
+            if(check) {
+                Gson gson = new Gson();
+                CommentRequest commentRequest = gson.fromJson(jsonComment, CommentRequest.class);
+                Comment comment = new Comment();
+                comment.setHotelId(hotelId);
+                comment.setRoomId(roomId);
+                comment.setMessenger(commentRequest.getMessenger());
+                comment.setUserName(user.getUserDetail().getNameUserDetail());
+                comment.setUserId(user.getId());
+                commentService.saveComment(comment);
+                return  ResponseEntity.ok(new MessageResponse("comment successfully"));
+
+            }else {
+                return  ResponseEntity.ok(new MessageResponse("Bạn chưa từng đặt qua phòng này"));
+            }
+    }
+
+
 
 
 }

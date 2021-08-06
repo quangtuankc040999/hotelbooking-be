@@ -44,6 +44,8 @@ public class HomeController {
     EmailSenderService emailSenderService;
     @Autowired
     UserService userService;
+    @Autowired
+    CommentService commentService;
 
     List<HotelSearchResponse> hotelSearchResponseList = new ArrayList<>();
 
@@ -192,5 +194,12 @@ public class HomeController {
     public ResponseEntity<?> getAvatar(@RequestHeader("Authorization") String token){
         Long userId = getUserFromToken.getUserByUserNameFromJwt(token.substring(7)).getId();
         return ResponseEntity.ok().body( userService.getAvatar(userId).getAvatar());
+    }
+
+    // get room cmt
+    @GetMapping(value = "/comment/{hotelId}/{roomId}")
+    public ResponseEntity<?> getRoomComment(@PathVariable("hotelId")Long hotelId, @PathVariable("roomId") Long roomId){
+        List<Comment> comments = commentService.getAllComment(hotelId,roomId);
+        return ResponseEntity.ok().body(comments);
     }
 }
