@@ -46,7 +46,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @GetMapping("/testdeploy")
+    @GetMapping("/")
     public String testDeploy(){
         return "chuc mung ban da deploy thanh cong";
     }
