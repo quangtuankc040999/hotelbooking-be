@@ -153,8 +153,7 @@ public class HomeController {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setTo(existingUser.getEmail());
             mailMessage.setSubject("Complete Password Reset!");
-            mailMessage.setText("To complete the password reset process, please click here: "
-                    + host + "/forgot-password/reset-password/"+confirmationToken.getConfirmationToken());
+            mailMessage.setText("Code: "+confirmationToken.getConfirmationToken());
 
             // Send the email
             emailSenderService.sendEmail(mailMessage);
