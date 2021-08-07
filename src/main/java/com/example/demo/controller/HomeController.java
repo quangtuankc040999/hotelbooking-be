@@ -169,9 +169,7 @@ public class HomeController {
         ConfirmationToken confirmationToken = confirmationTokenRepository.findByConfirmationToken(token);
         User user = confirmationToken.getUser();
         user.setPassword(encoder.encode(passwordRequest));
-
         userRepository.save(user);
-
         return ResponseEntity.ok().body(new MessageResponse("change password successfully"));
     }
 
