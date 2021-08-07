@@ -33,6 +33,7 @@ public class RoomService {
         dateRepository.deleteRoomInBookingRoom(roomId);
         imageRepository.deleteImgRoom(roomId);
         roomRepository.deleteRoom(roomId);
+
     }
     public List<Room> getAllRoomByHotelId(Long id) {
         return roomRepository.findAllRoomByHotelId(id);

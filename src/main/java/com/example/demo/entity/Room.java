@@ -38,10 +38,7 @@ public class Room {
 	@ManyToOne
 	@JoinColumn(name = "hotelId")
 	private Hotel hotel;
-
-	@ManyToMany
-	@JsonBackReference
-	private List<User> host;
+	
 
 	private boolean promoted = false;
 
@@ -126,13 +123,7 @@ public class Room {
 		this.hotel = hotel;
 	}
 
-	public List<User> getHost() {
-		return host;
-	}
 
-	public void setHost(List<User> host) {
-		this.host = host;
-	}
 
 	public boolean isPromoted() {
 		return promoted;
@@ -191,7 +182,6 @@ public class Room {
 		this.availability = availability;
 		this.bookingRoom = bookingRoom;
 		this.hotel = hotel;
-		this.host = host;
 		this.promoted = promoted;
 		this.description = description;
 		this.images = images;
@@ -210,7 +200,7 @@ public class Room {
 	@Override
 	public String toString() {
 		return "Room [id=" + id + ", area=" + area + ", type=" + type + ", availability=" + availability + ", date="
-				+ bookingRoom + ", hotel=" + hotel + ", host=" + host + ", promoted=" + promoted + ", description="
+				+ bookingRoom + ", hotel=" + hotel + ", host=" + ", promoted=" + promoted + ", description="
 				+ description + ", image=" + images + "]";
 	}
 

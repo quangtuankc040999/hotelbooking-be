@@ -60,8 +60,6 @@ public class UserController {
         Room room = roomService.findOne(idRoom);
         User user = getUserFromToken.getUserByUserNameFromJwt(token.substring(7));
         dateService.bookRoom(from, to, idRoom, user); // luu vao bang bôking room
-        List<User> hosts = room.getHost();
-        hosts.add(user);
         roomService.saveRoom(room);
 
         Date date = new Date();
@@ -101,8 +99,7 @@ public class UserController {
         Room room = roomService.findOne(idRoom);
         User user = getUserFromToken.getUserByUserNameFromJwt(token.substring(7));
         dateService.bookRoom1(from, to, idRoom, user); // luu vao bang bôking room
-        List<User> hosts = room.getHost();
-        hosts.add(user);
+
         roomService.saveRoom(room);
 
         // Create the email
