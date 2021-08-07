@@ -15,7 +15,7 @@ public class JwtUtils {
 
     private final String jwtSecret = "Hotel";
 
-    private final int jwtExpirationMs = 10*3600*24;
+    private final int jwtExpirationMs = 100000000;
 
     public String generateJwtToken(Authentication authentication) {
 
