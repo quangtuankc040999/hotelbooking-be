@@ -81,7 +81,7 @@ public class UserController {
                 "\n" +
                 "Room type: " + room.getType() +
                 "\n" +
-                "Total: " + dateService.numberOfDay(to, from) * room.getPrice() + " VND" +
+                "Total: " + (dateService.numberOfDay(to, from)+1) * room.getPrice() + " VND" +
                 "\n" +
                 "If you have any inquiries, please do not hesitate to contact me or call the hotel directly.\n" +
                 "\n" +
@@ -119,7 +119,7 @@ public class UserController {
                 "\n" +
                 "Room type: " + room.getType() +
                 "\n" +
-                "Total: " + dateService.numberOfDay1(to,from) * room.getPrice()+" VND" +
+                "Total: " + (dateService.numberOfDay1(to,from) +1)  * room.getPrice()+" VND" +
                 "\n" +
                 "If you have any inquiries, please do not hesitate to contact me or call the hotel directly.\n" +
                 "\n" +
