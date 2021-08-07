@@ -95,7 +95,7 @@ public interface DateRepository extends JpaRepository<BookingRoom, Long> {
     List<ThongKeDatPhongUser> findAllBookingRoomBeforeNow(Long id);
 
 
-    @Query(value = "select end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  (datediff(end,start)+1)*room.price as Total\n" +
+    @Query(value = "select booking_room.id as bookingId, end, start, room.name as roomName, room.type as roomType, hotel.name as hotelName, city, street, country,  (datediff(end,start)+1)*room.price as Total\n" +
             "from booking_room \n" +
             "join room on booking_room.room_id = room.id \n" +
             "join hotel on room.hotel_id = hotel.id\n" +

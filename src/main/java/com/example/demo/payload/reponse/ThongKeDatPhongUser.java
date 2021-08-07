@@ -12,4 +12,5 @@ public interface ThongKeDatPhongUser {
     String getCity();
     String getCountry();
     String getStreet();
+    Long getBookingId();
 }
