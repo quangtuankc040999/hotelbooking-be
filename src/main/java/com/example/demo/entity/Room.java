@@ -38,7 +38,7 @@ public class Room {
 	@ManyToOne
 	@JoinColumn(name = "hotelId")
 	private Hotel hotel;
-	
+
 
 	private boolean promoted = false;
 
