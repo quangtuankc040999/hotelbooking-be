@@ -121,6 +121,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>bookinghotel-cnpm</finalName>
     </build>
 
 </project>
